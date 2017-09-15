@@ -8,6 +8,7 @@ import org.deeplearning4j.api.storage.StatsStorage;
 import org.deeplearning4j.api.storage.StatsStorageRouter;
 import org.deeplearning4j.nn.api.Layer;
 import org.deeplearning4j.nn.api.Model;
+import org.deeplearning4j.nn.api.activations.ActivationsFactory;
 import org.deeplearning4j.nn.graph.ComputationGraph;
 import org.deeplearning4j.nn.layers.FrozenLayer;
 import org.deeplearning4j.nn.layers.convolution.ConvolutionLayer;
@@ -134,7 +135,7 @@ public class ConvolutionalIterationListener implements IterationListener {
                 MultiLayerNetwork l = (MultiLayerNetwork) model;
                 for (Layer layer : l.getLayers()) {
                     if (!(layer instanceof FrozenLayer) && layer.input().rank() == 4) {
-                        INDArray output = layer.activate(layer.input());
+                        INDArray output = layer.activate(ActivationsFactory.getInstance().create(layer.input())).get(0);
                         int sampleDim = output.shape()[0] == 1 ? 0 : rnd.nextInt(output.shape()[0] - 1) + 1;
                         if (cnt == 0) {
                             INDArray inputs = ((ConvolutionLayer) layer).input();
@@ -159,7 +160,7 @@ public class ConvolutionalIterationListener implements IterationListener {
                 ComputationGraph l = (ComputationGraph) model;
                 for (Layer layer : l.getLayers()) {
                     if (!(layer instanceof FrozenLayer) && layer.input().rank() == 4) {
-                        INDArray output = layer.activate(layer.input());
+                        INDArray output = layer.activate(ActivationsFactory.getInstance().create(layer.input())).get(0);
                         int sampleDim = output.shape()[0] == 1 ? 0 : rnd.nextInt(output.shape()[0] - 1) + 1;
                         if (cnt == 0) {
                             INDArray inputs = ((ConvolutionLayer) layer).input();

@@ -136,6 +136,7 @@ public class ElementWiseVertex extends BaseGraphVertex {
             throw new RuntimeException("Vertex does not have gradients; gradients view array cannot be set here");
     }
 
+
     @Override
     public Pair<INDArray, MaskState> feedForwardMaskArrays(INDArray[] maskArrays, MaskState currentMaskState,
                     int minibatchSize) {
